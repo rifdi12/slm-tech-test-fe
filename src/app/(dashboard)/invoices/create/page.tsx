@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { ArrowLeft, Plus, Trash2 } from 'lucide-react';
@@ -20,7 +20,7 @@ const emptyItem = (): LineItem => ({
   amount: 0,
 });
 
-export default function CreateInvoicePage() {
+function CreateInvoiceContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [customers, setCustomers] = useState<Customer[]>([]);
@@ -279,5 +279,13 @@ export default function CreateInvoicePage() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function CreateInvoicePage() {
+  return (
+    <Suspense fallback={<div className="flex justify-center items-center h-40"><div className="animate-spin w-7 h-7 border-2 border-secondary border-t-transparent rounded-full" /></div>}>
+      <CreateInvoiceContent />
+    </Suspense>
   );
 }

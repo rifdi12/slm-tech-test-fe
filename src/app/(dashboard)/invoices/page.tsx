@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState, useCallback } from 'react';
+import { useEffect, useState, useCallback, Suspense } from 'react';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import { Plus, Filter, Download, MoreVertical } from 'lucide-react';
@@ -16,7 +16,7 @@ import { cn } from '@/lib/utils';
 
 const STATUS_TABS = ['All', 'Draft', 'Sent', 'Paid', 'Overdue'] as const;
 
-export default function InvoicesPage() {
+function InvoicesContent() {
   const searchParams = useSearchParams();
   const [invoices, setInvoices] = useState<Invoice[]>([]);
   const [meta, setMeta] = useState({ total: 0, page: 1, limit: 10, totalPages: 1 });
@@ -212,5 +212,13 @@ export default function InvoicesPage() {
         )}
       </Card>
     </div>
+  );
+}
+
+export default function InvoicesPage() {
+  return (
+    <Suspense fallback={<div className="flex justify-center items-center h-40"><div className="animate-spin w-7 h-7 border-2 border-secondary border-t-transparent rounded-full" /></div>}>
+      <InvoicesContent />
+    </Suspense>
   );
 }
