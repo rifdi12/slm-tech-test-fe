@@ -83,7 +83,7 @@ export default function EditInvoicePage() {
   if (loading) return <div className="p-8 flex justify-center items-center h-64"><div className="animate-spin w-8 h-8 border-2 border-secondary border-t-transparent rounded-full" /></div>;
 
   return (
-    <div className="p-8 space-y-6">
+    <div className="p-4 md:p-8 space-y-6">
       <div className="flex items-center gap-4">
         <Link href={`/invoices/${id}`} className="p-2 rounded-lg hover:bg-surface-high text-on-surface-variant hover:text-on-surface transition-colors">
           <ArrowLeft className="w-5 h-5" />

@@ -66,7 +66,7 @@ export default function InvoiceDetailPage() {
   const actions = STATUS_ACTIONS[invoice.status] ?? [];
 
   return (
-    <div className="p-8 space-y-6">
+    <div className="p-4 md:p-8 space-y-6">
       {/* Header */}
       <div className="flex items-center gap-4">
         <Link href="/invoices" className="p-2 rounded-lg hover:bg-surface-high text-on-surface-variant hover:text-on-surface transition-colors">

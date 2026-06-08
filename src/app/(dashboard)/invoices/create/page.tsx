@@ -87,7 +87,7 @@ function CreateInvoiceContent() {
   };
 
   return (
-    <div className="p-8 space-y-6">
+    <div className="p-4 md:p-8 space-y-6">
       {/* Header */}
       <div className="flex items-center gap-4">
         <Link href="/invoices" className="p-2 rounded-lg hover:bg-surface-high text-on-surface-variant hover:text-on-surface transition-colors">
@@ -101,13 +101,13 @@ function CreateInvoiceContent() {
             <span>New Invoice</span>
           </div>
         </div>
-        <div className="ml-auto flex gap-3">
-          <Button variant="ghost" onClick={() => router.push('/invoices')}>Cancel</Button>
+        <div className="ml-auto flex gap-2">
+          <Button variant="ghost" className="hidden sm:flex" onClick={() => router.push('/invoices')}>Cancel</Button>
           <Button variant="outline" onClick={() => handleSubmit('DRAFT')} loading={loading}>
-            Save as Draft
+            <span className="hidden sm:inline">Save as </span>Draft
           </Button>
           <Button onClick={() => handleSubmit('SENT')} loading={loading}>
-            Send Invoice
+            Send
           </Button>
         </div>
       </div>
@@ -118,9 +118,9 @@ function CreateInvoiceContent() {
         </div>
       )}
 
-      <div className="grid grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Left: Invoice Details */}
-        <div className="col-span-2 space-y-5">
+        <div className="lg:col-span-2 space-y-5">
           {/* Basic Info */}
           <Card>
             <h2 className="text-headline-sm text-on-surface mb-4">Invoice Details</h2>

@@ -29,7 +29,7 @@ export default function CustomerDetailPage() {
   if (!customer) return null;
 
   return (
-    <div className="p-8 space-y-6">
+    <div className="p-4 md:p-8 space-y-6">
       <div className="flex items-center gap-4">
         <Link href="/customers" className="p-2 rounded-lg hover:bg-surface-high text-on-surface-variant hover:text-on-surface transition-colors">
           <ArrowLeft className="w-5 h-5" />

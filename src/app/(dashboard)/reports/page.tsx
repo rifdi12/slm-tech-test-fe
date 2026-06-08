@@ -33,7 +33,7 @@ export default function ReportsPage() {
     : [];
 
   return (
-    <div className="p-8 space-y-6">
+    <div className="p-4 md:p-8 space-y-6">
       <div>
         <h1 className="text-headline-lg text-on-surface">Reports</h1>
         <p className="text-body-md text-on-surface-variant mt-1">Financial analytics and business insights.</p>

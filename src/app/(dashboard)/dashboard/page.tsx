@@ -45,29 +45,29 @@ export default function DashboardPage() {
   }
 
   return (
-    <div className="p-8 space-y-6">
+    <div className="p-4 md:p-8 space-y-6">
       {/* Header */}
-      <div className="flex items-start justify-between">
+      <div className="flex items-start justify-between gap-4">
         <div>
           <h1 className="text-headline-lg text-on-surface">Financial Overview</h1>
           <p className="text-body-md text-on-surface-variant mt-1">
             {greeting}, {user?.name?.split(' ')[0]}. Here&apos;s what&apos;s happening today.
           </p>
         </div>
-        <div className="flex gap-3">
-          <Button variant="outline" size="sm">
+        <div className="flex gap-2 shrink-0">
+          <Button variant="outline" size="sm" className="hidden sm:flex">
             <FileText className="w-4 h-4" />
             Last 30 Days
           </Button>
           <Button size="sm">
             <Upload className="w-4 h-4" />
-            Export Report
+            <span className="hidden sm:inline">Export Report</span>
           </Button>
         </div>
       </div>
 
       {/* KPI Cards */}
-      <div className="grid grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         <StatCard
           title="Total Revenue"
           value={formatCurrency(summary?.totalRevenue ?? 0)}
@@ -99,9 +99,9 @@ export default function DashboardPage() {
       </div>
 
       {/* Chart + Quick Actions */}
-      <div className="grid grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Revenue Chart */}
-        <Card className="col-span-2">
+        <Card className="lg:col-span-2">
           <div className="flex items-start justify-between mb-5">
             <div>
               <h2 className="text-headline-sm text-on-surface">Monthly Revenue</h2>
@@ -205,12 +205,13 @@ export default function DashboardPage() {
 
       {/* Recent Invoices */}
       <Card padding="none">
-        <div className="flex items-center justify-between px-6 py-4 border-b border-outline-variant">
+        <div className="flex items-center justify-between px-4 md:px-6 py-4 border-b border-outline-variant">
           <h2 className="text-headline-sm text-on-surface">Recent Invoices</h2>
           <Link href="/invoices" className="text-body-md text-secondary hover:underline font-medium">
-            View All Invoices
+            View All
           </Link>
         </div>
+        <div className="overflow-x-auto">
         <table className="w-full">
           <thead>
             <tr className="border-b border-outline-variant">
@@ -261,6 +262,7 @@ export default function DashboardPage() {
             ))}
           </tbody>
         </table>
+        </div>
       </Card>
     </div>
   );

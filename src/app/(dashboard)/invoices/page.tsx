@@ -54,7 +54,7 @@ function InvoicesContent() {
   };
 
   return (
-    <div className="p-8 space-y-6">
+    <div className="p-4 md:p-8 space-y-6">
       {/* Header */}
       <div className="flex items-start justify-between">
         <div>
@@ -74,7 +74,7 @@ function InvoicesContent() {
       </div>
 
       {/* Stats */}
-      <div className="grid grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         <Card>
           <p className="text-label-md text-on-surface-variant uppercase tracking-wider mb-2">Total Outstanding</p>
           <div className="flex items-baseline gap-2">
@@ -141,6 +141,7 @@ function InvoicesContent() {
           </div>
         ) : (
           <>
+            <div className="overflow-x-auto">
             <table className="w-full">
               <thead>
                 <tr className="border-b border-outline-variant">
@@ -199,6 +200,7 @@ function InvoicesContent() {
                 )}
               </tbody>
             </table>
+            </div>
             <div className="px-5">
               <Pagination
                 page={meta.page}
