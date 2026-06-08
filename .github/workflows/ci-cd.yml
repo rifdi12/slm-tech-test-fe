@@ -72,14 +72,12 @@ jobs:
             NEXT_PUBLIC_API_URL=${{ secrets.NEXT_PUBLIC_API_URL }}
 
       - name: Deploy to VPS
-        uses: appleboy/ssh-action@v1
-        with:
-          host: ${{ secrets.SSH_HOST }}
-          username: ${{ secrets.SSH_USER }}
-          password: ${{ secrets.SSH_PASSWORD }}
-          port: ${{ secrets.SSH_PORT || 22 }}
-          script: |
-            docker logout ghcr.io || true
-            cd /opt/mini-erp-fe
-            docker compose pull
-            docker compose up -d
+        env:
+          SSH_PASSWORD: ${{ secrets.SSH_PASSWORD }}
+          SSH_PORT: ${{ secrets.SSH_PORT || 22 }}
+        run: |
+          sudo apt-get install -y sshpass
+          sshpass -p "$SSH_PASSWORD" ssh -o StrictHostKeyChecking=no \
+            -p "${SSH_PORT:-22}" \
+            ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} \
+            "docker logout ghcr.io || true && cd /opt/mini-erp-fe && docker compose pull && docker compose up -d"
