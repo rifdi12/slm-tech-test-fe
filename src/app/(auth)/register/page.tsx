@@ -3,35 +3,43 @@
 import { useState, FormEvent } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { Eye, EyeOff, Building2, Lock, Mail } from 'lucide-react';
+import { Eye, EyeOff, Building2, Lock, Mail, User } from 'lucide-react';
 import { api } from '@/lib/api';
 import { storeAuth } from '@/lib/auth';
 import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
 
-export default function LoginPage() {
+export default function RegisterPage() {
   const router = useRouter();
+  const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
-  const [rememberMe, setRememberMe] = useState(false);
+  const [showConfirm, setShowConfirm] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     setError('');
-    setLoading(true);
 
+    if (password !== confirmPassword) {
+      setError('Passwords do not match');
+      return;
+    }
+
+    setLoading(true);
     try {
-      const response = await api.post<{ access_token: string; user: any }>('/auth/login', {
+      const response = await api.post<{ access_token: string; user: any }>('/auth/register', {
+        name,
         email,
         password,
       });
       storeAuth(response.access_token, response.user);
       router.push('/dashboard');
     } catch (err: any) {
-      setError(err.message || 'Invalid email or password');
+      setError(err.message || 'Failed to create account');
     } finally {
       setLoading(false);
     }
@@ -53,12 +61,23 @@ export default function LoginPage() {
 
         {/* Card */}
         <div className="bg-surface-lowest rounded-xl border border-outline-variant shadow-modal p-8">
-          <h2 className="text-headline-sm text-on-surface mb-1">Sign In</h2>
+          <h2 className="text-headline-sm text-on-surface mb-1">Create Account</h2>
           <p className="text-body-md text-on-surface-variant mb-6">
-            Enter your credentials to access your dashboard.
+            Fill in your details to get started.
           </p>
 
           <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+            <Input
+              label="Full Name"
+              type="text"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              placeholder="John Doe"
+              required
+              leftIcon={<User className="w-4 h-4" />}
+              autoComplete="name"
+            />
+
             <Input
               label="Email Address"
               type="email"
@@ -71,12 +90,7 @@ export default function LoginPage() {
             />
 
             <div className="flex flex-col gap-1.5">
-              <div className="flex items-center justify-between">
-                <label className="text-body-md font-medium text-on-surface">Password</label>
-                <button type="button" className="text-label-md text-secondary hover:underline">
-                  Forgot Password?
-                </button>
-              </div>
+              <label className="text-body-md font-medium text-on-surface">Password</label>
               <div className="relative">
                 <div className="absolute left-3 top-1/2 -translate-y-1/2 text-outline">
                   <Lock className="w-4 h-4" />
@@ -87,7 +101,7 @@ export default function LoginPage() {
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="••••••••"
                   required
-                  autoComplete="current-password"
+                  autoComplete="new-password"
                   className="w-full pl-10 pr-10 py-2 rounded border border-outline-variant bg-surface-lowest text-body-md text-on-surface placeholder:text-outline focus:outline-none focus:border-secondary focus:ring-2 focus:ring-secondary/20 transition-colors"
                 />
                 <button
@@ -100,15 +114,30 @@ export default function LoginPage() {
               </div>
             </div>
 
-            <label className="flex items-center gap-2.5 cursor-pointer">
-              <input
-                type="checkbox"
-                checked={rememberMe}
-                onChange={(e) => setRememberMe(e.target.checked)}
-                className="w-4 h-4 rounded border-outline-variant accent-secondary"
-              />
-              <span className="text-body-md text-on-surface">Keep me signed in for 30 days</span>
-            </label>
+            <div className="flex flex-col gap-1.5">
+              <label className="text-body-md font-medium text-on-surface">Confirm Password</label>
+              <div className="relative">
+                <div className="absolute left-3 top-1/2 -translate-y-1/2 text-outline">
+                  <Lock className="w-4 h-4" />
+                </div>
+                <input
+                  type={showConfirm ? 'text' : 'password'}
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  placeholder="••••••••"
+                  required
+                  autoComplete="new-password"
+                  className="w-full pl-10 pr-10 py-2 rounded border border-outline-variant bg-surface-lowest text-body-md text-on-surface placeholder:text-outline focus:outline-none focus:border-secondary focus:ring-2 focus:ring-secondary/20 transition-colors"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowConfirm(!showConfirm)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-outline hover:text-on-surface"
+                >
+                  {showConfirm ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                </button>
+              </div>
+            </div>
 
             {error && (
               <div className="py-2.5 px-3 rounded-lg bg-red-50 border border-red-200 text-body-md text-red-600">
@@ -117,15 +146,15 @@ export default function LoginPage() {
             )}
 
             <Button type="submit" size="lg" loading={loading} className="w-full mt-1">
-              Sign In to Dashboard →
+              Create Account →
             </Button>
           </form>
 
           <div className="mt-6 pt-5 border-t border-outline-variant text-center">
             <p className="text-body-md text-on-surface-variant">
-              Don't have an account?{' '}
-              <Link href="/register" className="text-secondary font-medium hover:underline">
-                Create Account
+              Already have an account?{' '}
+              <Link href="/login" className="text-secondary font-medium hover:underline">
+                Sign In
               </Link>
             </p>
           </div>
