@@ -1,0 +1,9 @@
+services:
+  app:
+    image: ghcr.io/rifdi12/slm-tech-test-fe:latest
+    container_name: mini-erp-frontend
+    restart: unless-stopped
+    ports:
+      - "3002:3000"
+    env_file:
+      - .env
